@@ -1,12 +1,23 @@
 package be.ucll.backend.campusapp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 
 @Entity
 public class Lokaal {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
+    private String typeLokaal;
+    private int aantalPersonen;
+    private int verdieping;
+    @ManyToOne
+    @JoinColumn(name = "campus_name")
+    @JsonBackReference
+    private Campus campus;
+
+    public Lokaal() {}
 
     public void setId(Long id) {
         this.id = id;
@@ -14,5 +25,45 @@ public class Lokaal {
 
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTypeLokaal() {
+        return typeLokaal;
+    }
+
+    public void setTypeLokaal(String typeLokaal) {
+        this.typeLokaal = typeLokaal;
+    }
+
+    public int getAantalPersonen() {
+        return aantalPersonen;
+    }
+
+    public void setAantalPersonen(int aantalPersonen) {
+        this.aantalPersonen = aantalPersonen;
+    }
+
+    public int getVerdieping() {
+        return verdieping;
+    }
+
+    public void setVerdieping(int verdieping) {
+        this.verdieping = verdieping;
+    }
+
+    public Campus getCampus() {
+        return campus;
+    }
+
+    public void setCampus(Campus campus) {
+        this.campus = campus;
     }
 }
