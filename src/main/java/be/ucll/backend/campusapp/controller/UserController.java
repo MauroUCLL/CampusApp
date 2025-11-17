@@ -1,0 +1,33 @@
+package be.ucll.backend.campusapp.controller;
+
+import be.ucll.backend.campusapp.model.Reservatie;
+import be.ucll.backend.campusapp.model.User;
+import be.ucll.backend.campusapp.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/user")
+public class UserController {
+    private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("/{userId}/reservaties/{reservatieId}")
+    public User addReservatie(
+            @PathVariable long userId,
+            @PathVariable long reservatieId) {
+        return userService.addReservatie(userId, reservatieId);
+    }
+
+    @GetMapping("/{id}/reservaties")
+    public List<Reservatie> getReservaties(@PathVariable long id) {
+        return userService.getReservatiesForUser(id);
+    }
+}
+
