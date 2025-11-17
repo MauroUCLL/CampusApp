@@ -2,9 +2,7 @@ package be.ucll.backend.campusapp.controller;
 
 import be.ucll.backend.campusapp.model.Campus;
 import be.ucll.backend.campusapp.service.CampusService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +18,15 @@ public class CampusController {
     @GetMapping
     public List<Campus> findAll() {
         return campusService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Campus findById(@PathVariable String id) {
+        return campusService.findById(id);
+    }
+
+    @PostMapping
+    public Campus createCampus(@RequestBody Campus campus) {
+        return campusService.createCampus(campus);
     }
 }

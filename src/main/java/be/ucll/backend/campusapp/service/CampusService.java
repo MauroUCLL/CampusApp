@@ -20,4 +20,15 @@ public class CampusService {
     public List<Campus> findAll() {
         return campusRepository.findAll();
     }
+
+    public Campus findById(String id) {
+        return campusRepository.findCampusByName(id);
+    }
+
+    public Campus createCampus(Campus campus) {
+        if (campus.equals(campusRepository.findCampusByName(campus.getName()))) {
+            throw new CampusException("Campus already exist");
+        }
+        return campusRepository.save(campus);
+    }
 }
