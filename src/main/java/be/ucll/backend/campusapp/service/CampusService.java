@@ -1,6 +1,7 @@
 package be.ucll.backend.campusapp.service;
 
 import be.ucll.backend.campusapp.model.Campus;
+import be.ucll.backend.campusapp.model.Lokaal;
 import be.ucll.backend.campusapp.repository.CampusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,19 @@ public class CampusService {
             throw new CampusException("Campus already exist");
         }
         return campusRepository.save(campus);
+    }
+
+    public List<Lokaal> findAllLokalen(String id) {
+        return campusRepository.findCampusByName(id).getLokalen();
+    }
+
+    public Lokaal findLokaalById(String campusId, Long lokaalid) {
+        List<Lokaal> foundLokaal = findById(campusId).getLokalen();
+        for (Lokaal lokaal : foundLokaal) {
+            if (lokaal.getId().equals(lokaalid)) {
+                return lokaal;
+            }
+        }
+        return null;
     }
 }

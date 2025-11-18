@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
         return Map.of("error", "An unexpected error occurred: " + ex.getMessage());
     }
 
-    @ExceptionHandler(CampusException.class)
+    @ExceptionHandler(UserException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleUserServiceException(UserException ex) {
         return Map.of("User not found", ex.getMessage());
