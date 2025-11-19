@@ -1,5 +1,6 @@
 package be.ucll.backend.campusapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -15,6 +16,9 @@ public class Reservatie {
     private String commentaar;
     @ManyToMany
     private List<User> users;
+    @ManyToMany(mappedBy = "reservaties")
+    @JsonBackReference
+    private List<Lokaal> lokalen;
 
     public void setId(Long id) {
         this.id = id;
@@ -54,5 +58,13 @@ public class Reservatie {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public List<Lokaal> getLokalen() {
+        return lokalen;
+    }
+
+    public void setLokalen(List<Lokaal> lokalen) {
+        this.lokalen = lokalen;
     }
 }

@@ -1,11 +1,10 @@
--- Drop tables if they exist to start fresh
+DROP TABLE IF EXISTS lokaal_reservatie;
+DROP TABLE IF EXISTS user_reservatie;
+DROP TABLE IF EXISTS reservatie;
+DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS lokaal;
 DROP TABLE IF EXISTS campus;
-DROP TABLE IF EXISTS user_reservatie;
-DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS reservatie;
 
--- Table for Campus
 CREATE TABLE campus
 (
     name            VARCHAR(255) NOT NULL,
@@ -14,7 +13,6 @@ CREATE TABLE campus
     PRIMARY KEY (name)
 );
 
--- Table for Lokaal
 CREATE TABLE lokaal
 (
     id             BIGINT NOT NULL AUTO_INCREMENT,
@@ -33,11 +31,11 @@ CREATE TABLE lokaal
 
 CREATE TABLE reservatie
 (
-    id         BIGINT NOT NULL AUTO_INCREMENT,
-    user_id    BIGINT NOT NULL,
-    startDate  DATE,
-    endDate    DATE,
-    commentaar VARCHAR(500),
+    id          BIGINT NOT NULL AUTO_INCREMENT,
+    user_id     BIGINT NOT NULL,
+    startDate   DATE,
+    endDate     DATE,
+    commentaar  VARCHAR(500),
     PRIMARY KEY (id)
 );
 
@@ -51,6 +49,7 @@ CREATE TABLE user
     PRIMARY KEY (id)
 );
 
+-- Many-to-Many: User <-> Reservatie
 CREATE TABLE user_reservatie
 (
     user_id       BIGINT NOT NULL,
@@ -59,7 +58,23 @@ CREATE TABLE user_reservatie
     CONSTRAINT fk_pc_person FOREIGN KEY (user_id)
         REFERENCES user (id)
         ON DELETE CASCADE,
-    CONSTRAINT fk_pc_course FOREIGN KEY (reservatie_id)
+    CONSTRAINT fk_pc_reserv FOREIGN KEY (reservatie_id)
+        REFERENCES reservatie (id)
+        ON DELETE CASCADE
+);
+
+-- Many-to-Many: Lokaal <-> Reservatie
+CREATE TABLE lokaal_reservatie
+(
+    lokaal_id     BIGINT NOT NULL,
+    reservatie_id BIGINT NOT NULL,
+    PRIMARY KEY (lokaal_id, reservatie_id),
+
+    CONSTRAINT fk_lr_lokaal FOREIGN KEY (lokaal_id)
+        REFERENCES lokaal (id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_lr_reserv FOREIGN KEY (reservatie_id)
         REFERENCES reservatie (id)
         ON DELETE CASCADE
 );

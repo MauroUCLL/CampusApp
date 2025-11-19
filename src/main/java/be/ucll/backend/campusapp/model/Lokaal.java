@@ -1,7 +1,10 @@
 package be.ucll.backend.campusapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Lokaal {
@@ -16,6 +19,14 @@ public class Lokaal {
     @JoinColumn(name = "campus_name")
     @JsonBackReference
     private Campus campus;
+    @ManyToMany
+    @JoinTable(
+            name = "lokaal_reservatie",
+            joinColumns = @JoinColumn(name = "lokaal_id"),
+            inverseJoinColumns = @JoinColumn(name = "reservatie_id")
+    )
+    @JsonManagedReference
+    private List<Reservatie> reservaties;
 
     public Lokaal() {}
 
@@ -65,5 +76,13 @@ public class Lokaal {
 
     public void setCampus(Campus campus) {
         this.campus = campus;
+    }
+
+    public List<Reservatie> getReservaties() {
+        return reservaties;
+    }
+
+    public void setReservaties(List<Reservatie> reservaties) {
+        this.reservaties = reservaties;
     }
 }

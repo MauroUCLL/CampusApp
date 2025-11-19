@@ -3,8 +3,10 @@ package be.ucll.backend.campusapp.controller;
 import be.ucll.backend.campusapp.model.Campus;
 import be.ucll.backend.campusapp.model.Lokaal;
 import be.ucll.backend.campusapp.service.CampusService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -32,8 +34,11 @@ public class CampusController {
     }
 
     @GetMapping("/{id}/rooms")
-    public List<Lokaal> getLokaalByCampus(@PathVariable String id) {
-        return campusService.findAllLokalen(id);
+    public List<Lokaal> getLokaalByCampus(@PathVariable String id,
+                                          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate availableFrom,
+                                          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate availableUntil,
+                                          @RequestParam(required = false) Integer minNumberOfSeats) {
+        return campusService.findAllLokalenWithDynamicFilters(id, availableFrom, availableUntil, minNumberOfSeats);
     }
 
     @GetMapping("/{campusId}/rooms/{roomId}")
