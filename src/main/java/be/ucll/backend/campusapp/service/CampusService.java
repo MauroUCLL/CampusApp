@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CampusService {
@@ -38,7 +39,39 @@ public class CampusService {
                                                          LocalDate availableFrom,
                                                          LocalDate availableUntil,
                                                          Integer minNumberOfSeats) {
-        return campusRepository.findCampusByName(id).getLokalen();
+        List<Lokaal> allRooms = campusRepository.findCampusByName(id).getLokalen();
+
+        return allRooms.stream()
+                .filter(lokaal -> {
+                    // Filter by minimum number of seats if provided
+                    if (minNumberOfSeats != null && lokaal.getAantalPersonen() < minNumberOfSeats) {
+                        return false;
+                    }
+
+                    // Filter by availability
+                    if (availableFrom != null || availableUntil != null) {
+                        return lokaal.getReservaties().stream().noneMatch(res -> {
+                            // If reservation overlaps the requested period, exclude room
+                            LocalDate resStart = res.getStartDate();
+                            LocalDate resEnd = res.getEndDate();
+
+                            boolean overlaps;
+
+                            if (availableFrom != null && availableUntil != null) {
+                                overlaps = !(resEnd.isBefore(availableFrom) || resStart.isAfter(availableUntil));
+                            } else if (availableFrom != null) {
+                                overlaps = !resEnd.isBefore(availableFrom);
+                            } else {
+                                overlaps = !resStart.isAfter(availableUntil);
+                            }
+
+                            return overlaps;
+                        });
+                    }
+
+                    return true;
+                })
+                .collect(Collectors.toList());
     }
 
     public Lokaal findLokaalById(String campusId, Long lokaalid) {
