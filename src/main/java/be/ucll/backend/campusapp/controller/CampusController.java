@@ -36,8 +36,10 @@ public class CampusController {
 
     @GetMapping("/{id}/rooms")
     public List<Lokaal> getLokaalByCampus(@PathVariable String id,
-                                          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate availableFrom,
-                                          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate availableUntil,
+                                          @RequestParam(required = false)
+                                          @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate availableFrom,
+                                          @RequestParam(required = false)
+                                          @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate availableUntil,
                                           @RequestParam(required = false) Integer minNumberOfSeats) {
         return campusService.findAllLokalenWithDynamicFilters(id, availableFrom, availableUntil, minNumberOfSeats);
     }
