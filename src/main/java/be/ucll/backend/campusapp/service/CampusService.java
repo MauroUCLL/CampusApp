@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,29 +44,23 @@ public class CampusService {
 
         return allRooms.stream()
                 .filter(lokaal -> {
-                    // Filter by minimum number of seats if provided
+
+                    // Seats filter
                     if (minNumberOfSeats != null && lokaal.getAantalPersonen() < minNumberOfSeats) {
                         return false;
                     }
 
-                    // Filter by availability
+                    // Availability filter
                     if (availableFrom != null || availableUntil != null) {
                         return lokaal.getReservaties().stream().noneMatch(res -> {
-                            // If reservation overlaps the requested period, exclude room
+
                             LocalDate resStart = res.getStartDate();
                             LocalDate resEnd = res.getEndDate();
 
-                            boolean overlaps;
+                            LocalDate from = (availableFrom != null) ? availableFrom : LocalDate.MIN;
+                            LocalDate until = (availableUntil != null) ? availableUntil : LocalDate.MAX;
 
-                            if (availableFrom != null && availableUntil != null) {
-                                overlaps = !(resEnd.isBefore(availableFrom) || resStart.isAfter(availableUntil));
-                            } else if (availableFrom != null) {
-                                overlaps = !resEnd.isBefore(availableFrom);
-                            } else {
-                                overlaps = !resStart.isAfter(availableUntil);
-                            }
-
-                            return overlaps;
+                            return !(resEnd.isBefore(from) || resStart.isAfter(until));  // return true → room NOT available → excluded
                         });
                     }
 
@@ -74,13 +69,11 @@ public class CampusService {
                 .collect(Collectors.toList());
     }
 
-    public Lokaal findLokaalById(String campusId, Long lokaalid) {
-        List<Lokaal> foundLokaal = findById(campusId).getLokalen();
-        for (Lokaal lokaal : foundLokaal) {
-            if (lokaal.getId().equals(lokaalid)) {
-                return lokaal;
-            }
-        }
-        return null;
+    public Optional<Lokaal> findLokaalById(String campusId, Long lokaalId) {
+        return findById(campusId)
+                .getLokalen()
+                .stream()
+                .filter(l -> l.getId().equals(lokaalId))
+                .findFirst();
     }
 }

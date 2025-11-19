@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/campuses")
@@ -42,7 +43,7 @@ public class CampusController {
     }
 
     @GetMapping("/{campusId}/rooms/{roomId}")
-    public Lokaal getLokaalByCampus(@PathVariable("campusId") String campusId, @PathVariable("roomId") long roomId) {
+    public Optional<Lokaal> getLokaalByCampus(@PathVariable("campusId") String campusId, @PathVariable("roomId") long roomId) {
         return campusService.findLokaalById(campusId, roomId);
     }
 }
