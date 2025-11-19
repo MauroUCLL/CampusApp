@@ -52,7 +52,7 @@ public class CampusService {
 
                     // Availability filter
                     if (availableFrom != null || availableUntil != null) {
-                        return lokaal.getReservaties().stream().noneMatch(res -> {
+                        return lokaal.getReservaties().stream().allMatch(res -> {
 
                             LocalDate resStart = res.getStartDate();
                             LocalDate resEnd = res.getEndDate();
@@ -60,7 +60,7 @@ public class CampusService {
                             LocalDate from = (availableFrom != null) ? availableFrom : LocalDate.MIN;
                             LocalDate until = (availableUntil != null) ? availableUntil : LocalDate.MAX;
 
-                            return !(resEnd.isBefore(from) || resStart.isAfter(until));  // return true → room NOT available → excluded
+                            return resEnd.isBefore(from) || resStart.isAfter(until);  // return true → room NOT available → excluded
                         });
                     }
 
