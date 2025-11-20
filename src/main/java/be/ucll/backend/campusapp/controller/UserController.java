@@ -18,7 +18,22 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/{userId}/reservaties/{reservatieId}")
+    @GetMapping()
+    public List<User> getUsers(){
+        return userService.getUsers();
+    }
+
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable("id") long id){
+        return userService.getUserById(id);
+    }
+
+    @PostMapping
+    public User createUser(@RequestBody User user){
+        return userService.createUser(user);
+    }
+
+    @PutMapping("/{userId}/reservaties/{reservatieId}")
     public User addReservatie(
             @PathVariable long userId,
             @PathVariable long reservatieId) {

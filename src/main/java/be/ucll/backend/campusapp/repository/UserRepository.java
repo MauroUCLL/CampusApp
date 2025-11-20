@@ -11,4 +11,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT r FROM User u JOIN u.reservaties r WHERE u.id = :userId")
     List<Reservatie> findReservatiesForUser(@Param("userId") long userId);
+
+    boolean existsUserByMail(String mail);
 }
