@@ -19,8 +19,8 @@ public class UserController {
     }
 
     @GetMapping()
-    public List<User> getUsers(){
-        return userService.getUsers();
+    public List<User> getUsers(@RequestParam(required = false) String nameMatches) {
+        return userService.getUsers(nameMatches);
     }
 
     @GetMapping("/{id}")
@@ -38,6 +38,11 @@ public class UserController {
             @PathVariable long userId,
             @PathVariable long reservatieId) {
         return userService.addReservatie(userId, reservatieId);
+    }
+
+    @GetMapping("/{userId}/reservaties/{reservatieId}")
+    public List<Reservatie> getReservatiesById(@PathVariable long userId, @PathVariable long reservatieId) {
+        return userService.getReservatiesForUserById(userId, reservatieId);
     }
 
     @GetMapping("/{id}/reservaties")

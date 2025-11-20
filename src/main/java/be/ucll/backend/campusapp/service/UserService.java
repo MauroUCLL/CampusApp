@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -16,8 +17,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public List<User> getUsers(String nameMatches) {
+        if (nameMatches == null || nameMatches.isEmpty()) {
+            return userRepository.findAll();
+        }
+        return userRepository.findByNaamContaining(nameMatches);
     }
 
     public User getUserById(long id) {
@@ -47,5 +51,14 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(UserException::new)
                 .getReservaties();
+    }
+
+    public List<Reservatie> getReservatiesForUserById(long userId, long reservatieId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException("User not found userid:" + userId));
+
+        return user.getReservaties().stream()
+                .filter(r -> r.getId() == reservatieId)
+                .collect(Collectors.toList());
     }
 }

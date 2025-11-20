@@ -13,4 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<Reservatie> findReservatiesForUser(@Param("userId") long userId);
 
     boolean existsUserByMail(String mail);
+
+    List<User> findByNaamContaining(String naam);
+
+    User findUserById(Long id);
 }
