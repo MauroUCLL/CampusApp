@@ -1,5 +1,9 @@
 package be.ucll.backend.campusapp.service;
 
+import be.ucll.backend.campusapp.exception.EmailAlreadyUsedException;
+import be.ucll.backend.campusapp.exception.ReservatieException;
+import be.ucll.backend.campusapp.exception.UserException;
+import be.ucll.backend.campusapp.model.Lokaal;
 import be.ucll.backend.campusapp.model.Reservatie;
 import be.ucll.backend.campusapp.model.User;
 import be.ucll.backend.campusapp.repository.UserRepository;
@@ -60,5 +64,26 @@ public class UserService {
         return user.getReservaties().stream()
                 .filter(r -> r.getId() == reservatieId)
                 .collect(Collectors.toList());
+    }
+
+    public Reservatie addRoom(long userId, long reservatieId, long roomId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException("User not found userid:" + userId));
+        Reservatie reservatie = user.getReservaties().stream()
+                .filter(r -> r.getId() == reservatieId)
+                .findFirst()
+                .orElseThrow(() -> new ReservatieException("Reservatie not found with id:" + reservatieId));
+        Lokaal lokaal = reservatie.getLokalen().stream()
+                .filter(room -> room.getId() == roomId)
+                .findFirst()
+                .orElseThrow(() -> new ReservatieException("Room not found with id:" + roomId));
+
+        if (!reservatie.getLokalen().contains(lokaal)) {
+            reservatie.getLokalen().add(lokaal);
+        }
+
+        userRepository.save(user);
+
+        return reservatie;
     }
 }

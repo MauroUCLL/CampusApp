@@ -1,4 +1,4 @@
-package be.ucll.backend.campusapp.service;
+package be.ucll.backend.campusapp.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

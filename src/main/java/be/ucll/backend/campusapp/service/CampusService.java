@@ -1,5 +1,6 @@
 package be.ucll.backend.campusapp.service;
 
+import be.ucll.backend.campusapp.exception.CampusException;
 import be.ucll.backend.campusapp.model.Campus;
 import be.ucll.backend.campusapp.model.Lokaal;
 import be.ucll.backend.campusapp.repository.CampusRepository;

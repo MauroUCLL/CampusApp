@@ -1,4 +1,4 @@
-package be.ucll.backend.campusapp.service;
+package be.ucll.backend.campusapp.exception;
 
 public class EmailAlreadyUsedException extends RuntimeException {
     public EmailAlreadyUsedException(String message){

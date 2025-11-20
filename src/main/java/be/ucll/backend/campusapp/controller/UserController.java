@@ -24,12 +24,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable("id") long id){
+    public User getUserById(@PathVariable("id") long id) {
         return userService.getUserById(id);
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user){
+    public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
@@ -49,5 +49,9 @@ public class UserController {
     public List<Reservatie> getReservaties(@PathVariable long id) {
         return userService.getReservatiesForUser(id);
     }
-}
 
+    @PutMapping("/{userId}/reservaties/{reservatieId}/rooms/{roomId}")
+    public Reservatie addRoom(@PathVariable long userId, @PathVariable long reservatieId, @PathVariable long roomId) {
+        return userService.addRoom(userId, reservatieId, roomId);
+    }
+}
