@@ -1,13 +1,13 @@
-# 📘 Campus Reservation System — Backend (Spring Boot)
+# Campus Reservation System — Backend (Spring Boot)
 
 A Spring Boot application for managing **campuses**, **lokalen (rooms)**, **users**, and **reservations**.  
 The system allows users to reserve one or multiple rooms on a campus during a specific date range.
 
 ---
 
-## ✨ Features
+## Features
 
-### 🏫 Campus Management
+### Campus Management
 - Retrieve all campuses
 - Retrieve all rooms for a campus
 - Filter rooms with query parameters:
@@ -20,16 +20,16 @@ Example:
 
 ---
 
-### 🏢 Lokaal (Room) Management
+### Lokaal (Room) Management
 - Rooms belong to a campus
 - Rooms can be reserved by many users (via reservations)
 
-### 👤 User Management
+### User Management
 - Create users
 - List users
 - Retrieve reservations per user
 
-### 📅 Reservatie Management
+### Reservatie Management
 - Create reservations that connect:
     - one user
     - one or multiple lokalen
@@ -41,7 +41,7 @@ Example:
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - Java 21
 - Spring Boot 3+
@@ -51,7 +51,7 @@ Example:
 
 ---
 
-## ▶️ Running the Application
+## Running the Application
 
 ### 1. Clone the Repository
 ```bash
