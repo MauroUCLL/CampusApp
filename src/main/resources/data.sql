@@ -18,12 +18,12 @@ VALUES ('PROXIMUS', 'Proximuslaan 1, 3001 Heverlee', 300),
        ('HERTOGSTRAAT', 'Hertogstraat 178, 3001 Heverlee', 200);
 
 INSERT INTO lokaal (id, name, typeLokaal, aantalPersonen, verdieping, campus_name)
-VALUES (1, 'A-101', 'LESLOKAAL', 25, 1, 'campus a'),
-       (2, 'A-201', 'COMPUTERLOKAAL', 30, 2, 'campus a'),
-       (3, 'B-105', 'LESLOKAAL', 40, 1, 'campus b'),
-       (4, 'B-301', 'AUDITORIUM', 120, 3, 'campus b'),
-       (5, 'C-010', 'COMPUTERLOKAAL', 20, 0, 'campus c'),
-       (6, 'C-220', 'VERGADERZAAL', 12, 2, 'campus c');
+VALUES (1, 'A-101', 'LESLOKAAL', 25, 1, 'PROXIMUS'),
+       (2, 'A-201', 'COMPUTERLOKAAL', 30, 2, 'PROXIMUS'),
+       (3, 'B-105', 'LESLOKAAL', 40, 1, 'GASTHUISBERG'),
+       (4, 'B-301', 'AUDITORIUM', 120, 3, 'GASTHUISBERG'),
+       (5, 'C-010', 'COMPUTERLOKAAL', 20, 0, 'HERTOGSTRAAT'),
+       (6, 'C-220', 'VERGADERZAAL', 12, 2, 'HERTOGSTRAAT');
 
 INSERT INTO user (id, voorNaam, naam, geboorteDatum, mail)
 VALUES (1, 'Alice', 'Johnson', '1993-05-12', 'alice@ucll.be'),
