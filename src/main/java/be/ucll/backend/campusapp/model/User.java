@@ -1,8 +1,9 @@
 package be.ucll.backend.campusapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -12,7 +13,7 @@ public class User {
     private Long id;
     private String voorNaam;
     private String naam;
-    private Date geboorteDatum;
+    private LocalDate geboorteDatum;
     private String mail;
     @ManyToMany
     @JoinTable(
@@ -20,7 +21,11 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "reservatie_id")
     )
+    @JsonIgnore
     private List<Reservatie> reservaties;
+
+    public User() {
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -46,11 +51,11 @@ public class User {
         this.naam = naam;
     }
 
-    public Date getGeboorteDatum() {
+    public LocalDate getGeboorteDatum() {
         return geboorteDatum;
     }
 
-    public void setGeboorteDatum(Date geboorteDatum) {
+    public void setGeboorteDatum(LocalDate geboorteDatum) {
         this.geboorteDatum = geboorteDatum;
     }
 

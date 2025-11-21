@@ -17,8 +17,8 @@ CREATE TABLE lokaal
 (
     id             BIGINT NOT NULL AUTO_INCREMENT,
     name           VARCHAR(255),
-    typeLokaal     VARCHAR(255),
-    aantalPersonen INT,
+    type_lokaal    VARCHAR(255),
+    aantal_personen INT,
     verdieping     INT,
     campus_name    VARCHAR(255),
     PRIMARY KEY (id),
@@ -33,23 +33,22 @@ CREATE TABLE reservatie
 (
     id          BIGINT NOT NULL AUTO_INCREMENT,
     user_id     BIGINT NOT NULL,
-    startDate   DATE,
-    endDate     DATE,
+    start_date  DATE,
+    end_date    DATE,
     commentaar  VARCHAR(500),
     PRIMARY KEY (id)
 );
 
 CREATE TABLE user
 (
-    id            BIGINT NOT NULL AUTO_INCREMENT,
-    voorNaam      VARCHAR(255),
-    naam          VARCHAR(255),
-    geboorteDatum DATE,
-    mail          VARCHAR(255),
+    id             BIGINT NOT NULL AUTO_INCREMENT,
+    voor_naam      VARCHAR(255),
+    naam           VARCHAR(255),
+    geboorte_datum DATE,
+    mail           VARCHAR(255),
     PRIMARY KEY (id)
 );
 
--- Many-to-Many: User <-> Reservatie
 CREATE TABLE user_reservatie
 (
     user_id       BIGINT NOT NULL,
@@ -63,7 +62,6 @@ CREATE TABLE user_reservatie
         ON DELETE CASCADE
 );
 
--- Many-to-Many: Lokaal <-> Reservatie
 CREATE TABLE lokaal_reservatie
 (
     lokaal_id     BIGINT NOT NULL,

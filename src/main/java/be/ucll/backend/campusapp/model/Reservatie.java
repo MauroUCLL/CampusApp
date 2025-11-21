@@ -14,11 +14,14 @@ public class Reservatie {
     private LocalDate startDate;
     private LocalDate endDate;
     private String commentaar;
-    @ManyToMany
+    @ManyToMany(mappedBy = "reservaties")
     private List<User> users;
     @ManyToMany(mappedBy = "reservaties")
     @JsonBackReference
     private List<Lokaal> lokalen;
+
+    public Reservatie() {
+    }
 
     public void setId(Long id) {
         this.id = id;
