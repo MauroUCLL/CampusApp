@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS lokaal_reservatie;
 DROP TABLE IF EXISTS user_reservatie;
 DROP TABLE IF EXISTS reservatie;
-DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS lokaal;
 DROP TABLE IF EXISTS campus;
 
@@ -39,7 +39,7 @@ CREATE TABLE reservatie
     PRIMARY KEY (id)
 );
 
-CREATE TABLE user
+CREATE TABLE users
 (
     id             BIGINT NOT NULL AUTO_INCREMENT,
     voor_naam      VARCHAR(255),
@@ -55,7 +55,7 @@ CREATE TABLE user_reservatie
     reservatie_id BIGINT NOT NULL,
     PRIMARY KEY (user_id, reservatie_id),
     CONSTRAINT fk_pc_person FOREIGN KEY (user_id)
-        REFERENCES user (id)
+        REFERENCES users (id)
         ON DELETE CASCADE,
     CONSTRAINT fk_pc_reserv FOREIGN KEY (reservatie_id)
         REFERENCES reservatie (id)

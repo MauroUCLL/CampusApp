@@ -1,8 +1,7 @@
-# noinspection SqlWithoutWhereForFile
 DELETE FROM lokaal_reservatie;
 DELETE FROM user_reservatie;
 DELETE FROM reservatie;
-DELETE FROM user;
+DELETE FROM users;
 DELETE FROM lokaal;
 DELETE FROM campus;
 
@@ -19,7 +18,7 @@ VALUES (1, 'A-101', 'LESLOKAAL', 25, 1, 'PROXIMUS'),
        (5, 'C-010', 'COMPUTERLOKAAL', 20, 0, 'HERTOGSTRAAT'),
        (6, 'C-220', 'VERGADERZAAL', 12, 2, 'HERTOGSTRAAT');
 
-INSERT INTO user (id, voor_naam, naam, geboorte_datum, mail)
+INSERT INTO users (id, voor_naam, naam, geboorte_datum, mail)
 VALUES (1, 'Alice', 'Johnson', '1993-05-12', 'alice@ucll.be'),
        (2, 'Bob', 'Smith', '1990-11-03', 'bob@ucll.be'),
        (3, 'Charlie', 'Adams', '1997-07-21', 'charlie@ucll.be'),
