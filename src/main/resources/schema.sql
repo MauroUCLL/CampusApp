@@ -32,7 +32,6 @@ CREATE TABLE lokaal
 CREATE TABLE reservatie
 (
     id          BIGINT NOT NULL AUTO_INCREMENT,
-    user_id     BIGINT NOT NULL,
     start_date  DATE,
     end_date    DATE,
     commentaar  VARCHAR(500),

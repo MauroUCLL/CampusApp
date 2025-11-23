@@ -25,12 +25,12 @@ VALUES (1, 'Alice', 'Johnson', '1993-05-12', 'alice@ucll.be'),
        (4, 'Diana', 'Brown', '1988-02-17', 'diana@ucll.be'),
        (5, 'Ethan', 'Baker', '1995-01-30', 'ethan@ucll.be');
 
-INSERT INTO reservatie (id, user_id, start_date, end_date, commentaar)
-VALUES (1, 1, '2025-03-20', '2025-03-21', 'Teamvergadering'),
-       (2, 2, '2025-04-01', '2025-04-02', 'Projectbespreking'),
-       (3, 3, '2025-04-05', '2025-04-05', 'Examinoefening'),
-       (4, 4, '2025-04-10', '2025-04-11', 'IT workshop'),
-       (5, 5, '2025-04-15', '2025-04-15', 'Interviewruimte nodig');
+INSERT INTO reservatie (id, start_date, end_date, commentaar)
+VALUES (1,'2025-03-20', '2025-03-21', 'Teamvergadering'),
+       (2,'2025-04-01', '2025-04-02', 'Projectbespreking'),
+       (3,'2025-04-05', '2025-04-05', 'Examenoefening'),
+       (4,'2025-04-10', '2025-04-11', 'IT workshop'),
+       (5,'2025-04-15', '2025-04-15', 'Interviewruimte nodig');
 
 INSERT INTO user_reservatie (user_id, reservatie_id)
 VALUES (1, 1),
