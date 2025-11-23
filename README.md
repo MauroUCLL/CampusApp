@@ -72,3 +72,13 @@ http://localhost:8080
 ```bash
 http://localhost:8080/swagger-ui.html
 ```
+## Available database profiles MySQL and H2:
+### in file application.properties
+### for MySQL:
+```bash
+spring.profiles.active=mysql
+```
+### for H2:
+```bash
+spring.profiles.active=h2
+```
