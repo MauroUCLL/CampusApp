@@ -7,6 +7,10 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(
+        name = "lokaal",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name", "campus_name"})
+)
 public class Lokaal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

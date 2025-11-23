@@ -3,13 +3,16 @@ package be.ucll.backend.campusapp.service;
 import be.ucll.backend.campusapp.exception.CampusException;
 import be.ucll.backend.campusapp.model.Campus;
 import be.ucll.backend.campusapp.model.Lokaal;
+import be.ucll.backend.campusapp.model.Reservatie;
 import be.ucll.backend.campusapp.repository.CampusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +36,18 @@ public class CampusService {
     public Campus createCampus(Campus campus) {
         if (campus.equals(campusRepository.findCampusByName(campus.getName()))) {
             throw new CampusException("Campus already exist");
+        }
+        List<Lokaal> lokalen = campus.getLokalen();
+        if (lokalen != null) {
+            Set<String> names = new HashSet<>();
+            for (Lokaal lokaal : lokalen) {
+                if (!names.add(lokaal.getName())) {
+                    // add() returns false if the name is already in the set
+                    throw new CampusException(
+                            "Duplicate room name in campus: " + lokaal.getName()
+                    );
+                }
+            }
         }
         return campusRepository.save(campus);
     }
@@ -76,5 +91,15 @@ public class CampusService {
                 .stream()
                 .filter(l -> l.getId().equals(lokaalId))
                 .findFirst();
+    }
+
+    public List<Reservatie> findReservatiesByRoomId(String campusId, long roomId) {
+        Lokaal lokaal = findLokaalById(campusId, roomId)
+                .orElseThrow(() -> new CampusException(
+                        "Lokaal with id " + roomId + " not found in campus " + campusId
+                ));
+
+        if (lokaal.getReservaties() != null) return lokaal.getReservaties();
+        return List.of();
     }
 }
