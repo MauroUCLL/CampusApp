@@ -3,7 +3,6 @@ package be.ucll.backend.campusapp.controller;
 import be.ucll.backend.campusapp.model.Reservatie;
 import be.ucll.backend.campusapp.model.User;
 import be.ucll.backend.campusapp.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,13 +10,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    public void setUserService(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
-
     @GetMapping()
     public List<User> getUsers(@RequestParam(required = false) String nameMatches) {
         return userService.getUsers(nameMatches);
