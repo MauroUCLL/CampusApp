@@ -2,7 +2,7 @@ package be.ucll.backend.campusapp.client;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
+
 import java.util.Scanner;
 
 public class ConsoleApp {
@@ -28,8 +28,11 @@ public class ConsoleApp {
             switch (choice) {
                 case 1 -> userMenu();
                 case 2 -> campusMenu();
-                case 0 -> { System.out.println("Goodbye!"); return; }
-                default -> System.out.println("Invalid choice.");
+                case 0 -> {
+                    System.out.println("bye");
+                    return;
+                }
+                default -> System.out.println("Invalid");
             }
         }
     }
@@ -54,8 +57,10 @@ public class ConsoleApp {
                 case 4 -> addReservatie();
                 case 5 -> getReservaties();
                 case 6 -> addRoomToReservation();
-                case 0 -> { return; }
-                default -> System.out.println("Invalid option.");
+                case 0 -> {
+                    return;
+                }
+                default -> System.out.println("Invalid");
             }
         }
     }
@@ -78,8 +83,10 @@ public class ConsoleApp {
                 case 3 -> createCampus();
                 case 4 -> getCampusRooms();
                 case 5 -> getCampusRoomById();
-                case 0 -> { return; }
-                default -> System.out.println("Invalid option.");
+                case 0 -> {
+                    return;
+                }
+                default -> System.out.println("Invalid");
             }
         }
     }
@@ -121,19 +128,15 @@ public class ConsoleApp {
 
         User user = new User(firstName, lastName, email, birthDate);
 
-        try {
-            String response = client.post()
-                    .uri("/user")
-                    .contentType(MediaType.valueOf("application/json"))
-                    .bodyValue(user)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
+        String response = client.post()
+                .uri("/user")
+                .contentType(MediaType.valueOf("application/json"))
+                .bodyValue(user)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
 
-            System.out.println("\nResponse:\n" + response);
-        } catch (WebClientResponseException e) {
-            System.out.println("\nError " + ": " + e.getResponseBodyAsString());
-        }
+        System.out.println("\nResponse:\n" + response);
     }
 
     private static void addReservatie() {
@@ -231,9 +234,17 @@ public class ConsoleApp {
 
         StringBuilder uri = new StringBuilder("/campus/" + id + "/rooms");
         boolean first = true;
-        if (!from.isBlank()) { uri.append("?availableFrom=").append(from); first = false; }
-        if (!until.isBlank()) { uri.append(first ? "?" : "&").append("availableUntil=").append(until); first = false; }
-        if (!minSeats.isBlank()) { uri.append(first ? "?" : "&").append("minNumberOfSeats=").append(minSeats); }
+        if (!from.isBlank()) {
+            uri.append("?availableFrom=").append(from);
+            first = false;
+        }
+        if (!until.isBlank()) {
+            uri.append(first ? "?" : "&").append("availableUntil=").append(until);
+            first = false;
+        }
+        if (!minSeats.isBlank()) {
+            uri.append(first ? "?" : "&").append("minNumberOfSeats=").append(minSeats);
+        }
 
         String response = client.get()
                 .uri(uri.toString())
@@ -257,6 +268,9 @@ public class ConsoleApp {
         System.out.println("\nResponse:\n" + response);
     }
 
-    private record User(String voorNaam, String naam, String mail, String geboorteDatum) {}
-    private record Campus(String name, String adres, int parkeerplaatsen) {}
+    private record User(String voorNaam, String naam, String mail, String geboorteDatum) {
+    }
+
+    private record Campus(String name, String adres, int parkeerplaatsen) {
+    }
 }
