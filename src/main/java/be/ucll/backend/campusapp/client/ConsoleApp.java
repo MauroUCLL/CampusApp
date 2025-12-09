@@ -87,7 +87,7 @@ public class ConsoleApp {
     private static void getAllUsers() {
         System.out.print("Filter name (optional): ");
         String filter = scanner.nextLine();
-        String uri = "/users" + (filter.isBlank() ? "" : "?nameMatches=" + filter);
+        String uri = "/user" + (filter.isBlank() ? "" : "?nameMatches=" + filter);
 
         String response = client.get()
                 .uri(uri)
@@ -102,7 +102,7 @@ public class ConsoleApp {
         long id = Long.parseLong(scanner.nextLine());
 
         String response = client.get()
-                .uri("/users/{id}", id)
+                .uri("/user/{id}", id)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -123,7 +123,7 @@ public class ConsoleApp {
 
         try {
             String response = client.post()
-                    .uri("/users")
+                    .uri("/user")
                     .contentType(MediaType.valueOf("application/json"))
                     .bodyValue(user)
                     .retrieve()
@@ -143,7 +143,7 @@ public class ConsoleApp {
         long reservatieId = Long.parseLong(scanner.nextLine());
 
         String response = client.put()
-                .uri("/users/{userId}/reservaties/{reservatieId}", userId, reservatieId)
+                .uri("/user/{userId}/reservaties/{reservatieId}", userId, reservatieId)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -155,7 +155,7 @@ public class ConsoleApp {
         long userId = Long.parseLong(scanner.nextLine());
 
         String response = client.get()
-                .uri("/users/{userId}/reservaties", userId)
+                .uri("/user/{userId}/reservaties", userId)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -171,7 +171,7 @@ public class ConsoleApp {
         long roomId = Long.parseLong(scanner.nextLine());
 
         String response = client.put()
-                .uri("/users/{userId}/reservaties/{reservatieId}/rooms/{roomId}", userId, reservatieId, roomId)
+                .uri("/user/{userId}/reservaties/{reservatieId}/rooms/{roomId}", userId, reservatieId, roomId)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -180,7 +180,7 @@ public class ConsoleApp {
 
     private static void getAllCampuses() {
         String response = client.get()
-                .uri("/campuses")
+                .uri("/campus")
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -192,7 +192,7 @@ public class ConsoleApp {
         String id = scanner.nextLine();
 
         String response = client.get()
-                .uri("/campuses/{id}", id)
+                .uri("/campus/{id}", id)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -210,7 +210,7 @@ public class ConsoleApp {
         Campus campus = new Campus(name, adres, parkeerplaatsen);
 
         String response = client.post()
-                .uri("/campuses")
+                .uri("/campus")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(campus)
                 .retrieve()
@@ -229,7 +229,7 @@ public class ConsoleApp {
         System.out.print("Min seats (blank for none): ");
         String minSeats = scanner.nextLine();
 
-        StringBuilder uri = new StringBuilder("/campuses/" + id + "/rooms");
+        StringBuilder uri = new StringBuilder("/campus/" + id + "/rooms");
         boolean first = true;
         if (!from.isBlank()) { uri.append("?availableFrom=").append(from); first = false; }
         if (!until.isBlank()) { uri.append(first ? "?" : "&").append("availableUntil=").append(until); first = false; }
@@ -250,7 +250,7 @@ public class ConsoleApp {
         long roomId = Long.parseLong(scanner.nextLine());
 
         String response = client.get()
-                .uri("/campuses/{campus}/rooms/{roomId}", campus, roomId)
+                .uri("/campus/{campus}/rooms/{roomId}", campus, roomId)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
