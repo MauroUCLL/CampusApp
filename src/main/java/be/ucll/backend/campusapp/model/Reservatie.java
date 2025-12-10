@@ -11,11 +11,16 @@ public class Reservatie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private LocalDate startDate;
+
     private LocalDate endDate;
+
     private String commentaar;
+
     @ManyToMany(mappedBy = "reservaties")
     private List<User> users;
+
     @ManyToMany(mappedBy = "reservaties")
     @JsonBackReference
     private List<Lokaal> lokalen;

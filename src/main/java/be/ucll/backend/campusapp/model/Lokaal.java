@@ -15,14 +15,20 @@ public class Lokaal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String typeLokaal;
+
     private int aantalPersonen;
+
     private int verdieping;
+
     @ManyToOne
     @JoinColumn(name = "campus_name")
     @JsonBackReference
     private Campus campus;
+
     @ManyToMany
     @JoinTable(
             name = "lokaal_reservatie",

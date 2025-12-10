@@ -9,8 +9,11 @@ import java.util.List;
 public class Campus {
     @Id
     private String name;
+
     private String adres;
+
     private int parkeerplaatsen;
+
     @OneToMany(mappedBy = "campus", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Lokaal> lokalen;

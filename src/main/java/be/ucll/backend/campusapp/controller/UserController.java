@@ -15,13 +15,14 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @GetMapping()
     public List<User> getUsers(@RequestParam(required = false) String nameMatches) {
         return userService.getUsers(nameMatches);
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable("id") long id) {
+    public User getUserById(@PathVariable long id) {
         return userService.getUserById(id);
     }
 

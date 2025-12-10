@@ -46,12 +46,12 @@ public class CampusController {
     }
 
     @GetMapping("/{campusId}/rooms/{roomId}")
-    public Optional<Lokaal> getLokaalByCampus(@PathVariable("campusId") String campusId, @PathVariable("roomId") long roomId) {
+    public Optional<Lokaal> getLokaalByCampus(@PathVariable String campusId, @PathVariable long roomId) {
         return campusService.findLokaalById(campusId, roomId);
     }
 
     @GetMapping("/{campusId}/rooms/{roomId}/reservaties")
-    public List<Reservatie> getReservatiesByRoomId(@PathVariable("campusId") String campusId, @PathVariable("roomId") long roomId){
+    public List<Reservatie> getReservatiesByRoomId(@PathVariable String campusId, @PathVariable long roomId){
         return campusService.findReservatiesByRoomId(campusId, roomId);
     }
 }

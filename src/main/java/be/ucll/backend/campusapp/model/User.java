@@ -12,10 +12,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String voorNaam;
+
     private String naam;
+
     private LocalDate geboorteDatum;
+
     private String mail;
+
     @ManyToMany
     @JoinTable(
             name = "user_reservatie",
