@@ -97,7 +97,6 @@ public class CampusService {
                 .stream()
                 .filter(l -> l.getId().equals(roomId))
                 .findFirst();
-
     }
 
     public List<Reservatie> findReservatiesByRoomId(String campusId, long roomId) {
