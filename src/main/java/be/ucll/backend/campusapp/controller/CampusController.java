@@ -1,5 +1,6 @@
 package be.ucll.backend.campusapp.controller;
 
+import be.ucll.backend.campusapp.exception.CampusException;
 import be.ucll.backend.campusapp.model.Campus;
 import be.ucll.backend.campusapp.model.Lokaal;
 import be.ucll.backend.campusapp.model.Reservatie;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/campus")
@@ -46,8 +46,11 @@ public class CampusController {
     }
 
     @GetMapping("/{campusId}/rooms/{roomId}")
-    public Optional<Lokaal> getLokaalByCampus(@PathVariable String campusId, @PathVariable long roomId) {
-        return campusService.findLokaalById(campusId, roomId);
+    public Lokaal getLokaalByCampus(@PathVariable String campusId, @PathVariable long roomId) {
+        return campusService.findLokaalById(campusId, roomId)
+                .orElseThrow(() -> new CampusException(
+                "lokaal with id " + roomId + " not found"
+        ));
     }
 
     @GetMapping("/{campusId}/rooms/{roomId}/reservaties")

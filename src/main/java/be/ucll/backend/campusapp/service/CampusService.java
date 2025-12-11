@@ -30,12 +30,14 @@ public class CampusService {
     }
 
     public Campus findById(String id) {
-        return campusRepository.findCampusByName(id);
+        return campusRepository.findCampusByName(id)
+                .orElseThrow(() -> new CampusException("Campus not found"));
     }
 
     public Campus createCampus(Campus campus) {
-        if (campus.equals(campusRepository.findCampusByName(campus.getName()))) {
-            throw new CampusException("Campus already exist");
+        Optional<Campus> existingCampus = campusRepository.findCampusByName(campus.getName());
+        if (existingCampus.isPresent()) {
+            throw new CampusException("Campus already exists: " + campus.getName());
         }
         List<Lokaal> lokalen = campus.getLokalen();
         if (lokalen != null) {
@@ -56,7 +58,11 @@ public class CampusService {
                                                          LocalDate availableFrom,
                                                          LocalDate availableUntil,
                                                          Integer minNumberOfSeats) {
-        List<Lokaal> allRooms = campusRepository.findCampusByName(id).getLokalen();
+
+        Campus campus = campusRepository.findCampusByName(id)
+                .orElseThrow(() -> new CampusException("Campus " + id + " not found"));
+
+        List<Lokaal> allRooms = campus.getLokalen();
 
         return allRooms.stream()
                 .filter(lokaal -> {
@@ -85,18 +91,19 @@ public class CampusService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Lokaal> findLokaalById(String campusId, Long lokaalId) {
+    public Optional<Lokaal> findLokaalById(String campusId, Long roomId) {
         return findById(campusId)
                 .getLokalen()
                 .stream()
-                .filter(l -> l.getId().equals(lokaalId))
+                .filter(l -> l.getId().equals(roomId))
                 .findFirst();
+
     }
 
     public List<Reservatie> findReservatiesByRoomId(String campusId, long roomId) {
         Lokaal lokaal = findLokaalById(campusId, roomId)
                 .orElseThrow(() -> new CampusException(
-                        "Lokaal with id " + roomId + " not found in campus " + campusId
+                        "lokaal with id " + roomId + " not found"
                 ));
 
         if (lokaal.getReservaties() != null) return lokaal.getReservaties();
