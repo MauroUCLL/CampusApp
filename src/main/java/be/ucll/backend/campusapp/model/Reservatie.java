@@ -1,6 +1,7 @@
 package be.ucll.backend.campusapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -22,7 +23,7 @@ public class Reservatie {
     private List<User> users;
 
     @ManyToMany(mappedBy = "reservaties")
-    @JsonBackReference
+    @JsonIgnore
     private List<Lokaal> lokalen;
 
     public Reservatie() {

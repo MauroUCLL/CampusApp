@@ -3,6 +3,7 @@ package be.ucll.backend.campusapp.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,16 +16,9 @@ public class Campus {
     private int parkeerplaatsen;
 
     @OneToMany(mappedBy = "campus", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Lokaal> lokalen;
+    private List<Lokaal> lokalen = new ArrayList<>();
 
     public Campus() {
-    }
-
-    @PrePersist
-    @PreUpdate
-    public void normalize() {
-        this.name = this.name.toLowerCase();
     }
 
     public String getName() {

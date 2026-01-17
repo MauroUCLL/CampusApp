@@ -39,13 +39,10 @@ public class CampusService {
             throw new CampusException("Campus already exists: " + campus.getName());
         }
         List<Lokaal> lokalen = campus.getLokalen();
-        if (lokalen != null) {
-            Set<String> names = new HashSet<>();
-            for (Lokaal lokaal : lokalen) {
-                if (!names.add(lokaal.getName())) {
-                    // add() returns false if the name is already in the set
-                    throw new CampusException("Duplicate room name in campus: " + lokaal.getName());
-                }
+        Set<String> names = new HashSet<>();
+        for (Lokaal lokaal : lokalen) {
+            if (!names.add(lokaal.getName())) {
+                throw new CampusException("Duplicate room name in campus: " + lokaal.getName());
             }
         }
         return campusRepository.save(campus);

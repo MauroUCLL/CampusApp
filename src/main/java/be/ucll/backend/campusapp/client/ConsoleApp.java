@@ -1,17 +1,14 @@
 package be.ucll.backend.campusapp.client;
 
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Scanner;
 
 public class ConsoleApp {
 
     private static final String BASE_URL = "http://localhost:8080";
-    private static final WebClient client = WebClient.builder()
-            .baseUrl(BASE_URL)
-            .build();
-
+    private static final RestTemplate restTemplate = new RestTemplate();
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -43,9 +40,6 @@ public class ConsoleApp {
             System.out.println("1. Get all users");
             System.out.println("2. Get user by ID");
             System.out.println("3. Create user");
-            System.out.println("4. Add reservatie to user");
-            System.out.println("5. Get reservaties for user");
-            System.out.println("6. Add room to reservatie");
             System.out.println("0. Back");
             System.out.print("Choice: ");
 
@@ -54,9 +48,6 @@ public class ConsoleApp {
                 case 1 -> getAllUsers();
                 case 2 -> getUserById();
                 case 3 -> createUser();
-                case 4 -> addReservatie();
-                case 5 -> getReservaties();
-                case 6 -> addRoomToReservation();
                 case 0 -> {
                     return;
                 }
@@ -71,8 +62,6 @@ public class ConsoleApp {
             System.out.println("1. Get all campuses");
             System.out.println("2. Get campus by ID");
             System.out.println("3. Create campus");
-            System.out.println("4. Get rooms for campus");
-            System.out.println("5. Get room by campus + roomId");
             System.out.println("0. Back");
             System.out.print("Choice: ");
 
@@ -81,8 +70,6 @@ public class ConsoleApp {
                 case 1 -> getAllCampuses();
                 case 2 -> getCampusById();
                 case 3 -> createCampus();
-                case 4 -> getCampusRooms();
-                case 5 -> getCampusRoomById();
                 case 0 -> {
                     return;
                 }
@@ -91,28 +78,17 @@ public class ConsoleApp {
         }
     }
 
-    private static void getAllUsers() {
-        System.out.print("Filter name (optional): ");
-        String filter = scanner.nextLine();
-        String uri = "/user" + (filter.isBlank() ? "" : "?nameMatches=" + filter);
+    // -------------------- Users --------------------
 
-        String response = client.get()
-                .uri(uri)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+    private static void getAllUsers() {
+        String response = restTemplate.getForObject(BASE_URL + "/user", String.class);
         System.out.println("\nResponse:\n" + response);
     }
 
     private static void getUserById() {
         System.out.print("User ID: ");
         long id = Long.parseLong(scanner.nextLine());
-
-        String response = client.get()
-                .uri("/user/{id}", id)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        String response = restTemplate.getForObject(BASE_URL + "/user/{id}", String.class, id);
         System.out.println("\nResponse:\n" + response);
     }
 
@@ -128,77 +104,25 @@ public class ConsoleApp {
 
         User user = new User(firstName, lastName, email, birthDate);
 
-        String response = client.post()
-                .uri("/user")
-                .contentType(MediaType.valueOf("application/json"))
-                .bodyValue(user)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<User> entity = new HttpEntity<>(user, headers);
 
+        String response = restTemplate.postForObject(BASE_URL + "/user", entity, String.class);
         System.out.println("\nResponse:\n" + response);
     }
 
-    private static void addReservatie() {
-        System.out.print("User ID: ");
-        long userId = Long.parseLong(scanner.nextLine());
-        System.out.print("Reservatie ID: ");
-        long reservatieId = Long.parseLong(scanner.nextLine());
-
-        String response = client.put()
-                .uri("/user/{userId}/reservaties/{reservatieId}", userId, reservatieId)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-        System.out.println("\nResponse:\n" + response);
-    }
-
-    private static void getReservaties() {
-        System.out.print("User ID: ");
-        long userId = Long.parseLong(scanner.nextLine());
-
-        String response = client.get()
-                .uri("/user/{userId}/reservaties", userId)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-        System.out.println("\nResponse:\n" + response);
-    }
-
-    private static void addRoomToReservation() {
-        System.out.print("User ID: ");
-        long userId = Long.parseLong(scanner.nextLine());
-        System.out.print("Reservatie ID: ");
-        long reservatieId = Long.parseLong(scanner.nextLine());
-        System.out.print("Room ID: ");
-        long roomId = Long.parseLong(scanner.nextLine());
-
-        String response = client.put()
-                .uri("/user/{userId}/reservaties/{reservatieId}/rooms/{roomId}", userId, reservatieId, roomId)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-        System.out.println("\nResponse:\n" + response);
-    }
+    // -------------------- Campuses --------------------
 
     private static void getAllCampuses() {
-        String response = client.get()
-                .uri("/campus")
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        String response = restTemplate.getForObject(BASE_URL + "/campus", String.class);
         System.out.println("\nResponse:\n" + response);
     }
 
     private static void getCampusById() {
         System.out.print("Campus ID (name): ");
         String id = scanner.nextLine();
-
-        String response = client.get()
-                .uri("/campus/{id}", id)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        String response = restTemplate.getForObject(BASE_URL + "/campus/{id}", String.class, id);
         System.out.println("\nResponse:\n" + response);
     }
 
@@ -212,65 +136,17 @@ public class ConsoleApp {
 
         Campus campus = new Campus(name, adres, parkeerplaatsen);
 
-        String response = client.post()
-                .uri("/campus")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(campus)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Campus> entity = new HttpEntity<>(campus, headers);
+
+        String response = restTemplate.postForObject(BASE_URL + "/campus", entity, String.class);
         System.out.println("\nResponse:\n" + response);
     }
 
-    private static void getCampusRooms() {
-        System.out.print("Campus ID: ");
-        String id = scanner.nextLine();
-        System.out.print("Available from (dd/MM/yyyy or blank): ");
-        String from = scanner.nextLine();
-        System.out.print("Available until (dd/MM/yyyy or blank): ");
-        String until = scanner.nextLine();
-        System.out.print("Min seats (blank for none): ");
-        String minSeats = scanner.nextLine();
+    // -------------------- Records --------------------
 
-        StringBuilder uri = new StringBuilder("/campus/" + id + "/rooms");
-        boolean first = true;
-        if (!from.isBlank()) {
-            uri.append("?availableFrom=").append(from);
-            first = false;
-        }
-        if (!until.isBlank()) {
-            uri.append(first ? "?" : "&").append("availableUntil=").append(until);
-            first = false;
-        }
-        if (!minSeats.isBlank()) {
-            uri.append(first ? "?" : "&").append("minNumberOfSeats=").append(minSeats);
-        }
+    private record User(String voorNaam, String naam, String mail, String geboorteDatum) { }
 
-        String response = client.get()
-                .uri(uri.toString())
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-        System.out.println("\nResponse:\n" + response);
-    }
-
-    private static void getCampusRoomById() {
-        System.out.print("Campus ID: ");
-        String campus = scanner.nextLine();
-        System.out.print("Room ID: ");
-        long roomId = Long.parseLong(scanner.nextLine());
-
-        String response = client.get()
-                .uri("/campus/{campus}/rooms/{roomId}", campus, roomId)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-        System.out.println("\nResponse:\n" + response);
-    }
-
-    private record User(String voorNaam, String naam, String mail, String geboorteDatum) {
-    }
-
-    private record Campus(String name, String adres, int parkeerplaatsen) {
-    }
+    private record Campus(String name, String adres, int parkeerplaatsen) { }
 }

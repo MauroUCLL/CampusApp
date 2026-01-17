@@ -1,7 +1,7 @@
 package be.ucll.backend.campusapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class Lokaal {
 
     @ManyToOne
     @JoinColumn(name = "campus_name")
-    @JsonBackReference
+    @JsonBackReference("campus-lokalen")
     private Campus campus;
 
     @ManyToMany
@@ -35,7 +35,7 @@ public class Lokaal {
             joinColumns = @JoinColumn(name = "lokaal_id"),
             inverseJoinColumns = @JoinColumn(name = "reservatie_id")
     )
-    @JsonManagedReference
+    @JsonIgnore
     private List<Reservatie> reservaties;
 
     public Lokaal() {}
