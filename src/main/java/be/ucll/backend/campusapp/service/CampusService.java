@@ -44,6 +44,7 @@ public class CampusService {
             if (!names.add(lokaal.getName())) {
                 throw new CampusException("Duplicate room name in campus: " + lokaal.getName());
             }
+            lokaal.setCampus(campus);
         }
         return campusRepository.save(campus);
     }
